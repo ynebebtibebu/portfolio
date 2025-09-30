@@ -11,7 +11,7 @@ const app = express();
 
 // Configure CORS
 app.use(cors({
-  origin: ['http://localhost:5000', 'https://yourapp.onrender.com'] // Replace with Render URL
+  origin: ['http://localhost:5000', 'https://portfolio-abc123.onrender.com']
 }));
 
 // Middleware
