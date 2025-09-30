@@ -4,35 +4,25 @@ const cors = require('cors');
 const path = require('path');
 const dotenv = require('dotenv');
 
-// Load environment variables
 dotenv.config();
 
 const app = express();
 
-// Configure CORS
 app.use(cors({
-  origin: ['http://localhost:5000', 'https://portfolio-abc123.onrender.com']
+  origin: ['http://localhost:5000', 'https://yourapp.onrender.com'] // Replace with Render URL
 }));
-
-// Middleware
 app.use(express.json());
-
-// Serve static files
 app.use('/static', express.static(path.join(__dirname, 'static')));
 
-// Serve frontend
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'templates', 'index.html'));
 });
 
-// Send Email API
 app.post('/contact', async (req, res) => {
   const { name, email, message } = req.body;
-
   if (!name || !email || !message) {
     return res.status(400).json({ error: 'All fields are required' });
   }
-
   const mailOptions = {
     from: email,
     to: 'ynebebtibebu31@gmail.com',
@@ -40,7 +30,6 @@ app.post('/contact', async (req, res) => {
     text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
     replyTo: email
   };
-
   try {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -57,7 +46,6 @@ app.post('/contact', async (req, res) => {
   }
 });
 
-// Serve CV
 app.get('/cv', (req, res) => {
   const filePath = path.join(__dirname, 'cv', 'Yinebeb_CV.pdf');
   res.download(filePath, 'Yinebeb_CV.pdf', (err) => {
@@ -68,12 +56,10 @@ app.get('/cv', (req, res) => {
   });
 });
 
-// Fallback route for SPA
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'templates', 'index.html'));
 });
 
-// Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
