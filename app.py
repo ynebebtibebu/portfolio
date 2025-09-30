@@ -16,8 +16,8 @@ CORS(app, resources={r"/contact": {"origins": ["http://localhost:5000", "https:/
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME', 'ynebebtibebu31@gmail.com')
-app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD', 'your-16-character-app-password')  # Replace with valid App Password
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME', 'ynebebtibebu9@gmail.com')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD', 'ynetibebu12yt21')  # Replace with valid App Password
 mail = Mail(app)
 
 # Serve frontend
