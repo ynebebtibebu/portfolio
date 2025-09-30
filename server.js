@@ -11,7 +11,7 @@ const app = express();
 
 // Configure CORS to allow requests from specific origins
 app.use(cors({
-  origin: ['http://localhost:5000', 'https://your-production-domain.com']
+  origin: ['http://localhost:5000', 'https://yourapp.onrender.com']
 }));
 
 // Middleware to parse JSON bodies
