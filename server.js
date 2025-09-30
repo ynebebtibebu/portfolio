@@ -4,25 +4,25 @@ const cors = require('cors');
 const path = require('path');
 const dotenv = require('dotenv');
 
-// Load environment variables from .env file
+// Load environment variables
 dotenv.config();
 
 const app = express();
 
-// Configure CORS to allow requests from specific origins
+// Configure CORS
 app.use(cors({
-  origin: ['http://localhost:5000', 'https://yourapp.onrender.com']
+  origin: ['http://localhost:5000', 'https://yourapp.onrender.com'] // Replace with Render URL
 }));
 
-// Middleware to parse JSON bodies
+// Middleware
 app.use(express.json());
 
-// Serve static files from the 'static' directory
+// Serve static files
 app.use('/static', express.static(path.join(__dirname, 'static')));
 
 // Serve frontend
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'templates', 'index.html')); // Updated to 'templates'
+  res.sendFile(path.join(__dirname, 'templates', 'index.html'));
 });
 
 // Send Email API
@@ -45,8 +45,8 @@ app.post('/contact', async (req, res) => {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: process.env.MAIL_USERNAME || 'ynebebtibebu31@gmail.com',
-        pass: process.env.MAIL_PASSWORD || 'ynetibebu12yt21'
+        user: process.env.MAIL_USERNAME,
+        pass: process.env.MAIL_PASSWORD
       }
     });
     await transporter.sendMail(mailOptions);
@@ -68,7 +68,12 @@ app.get('/cv', (req, res) => {
   });
 });
 
-// Start the server
+// Fallback route for SPA
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'templates', 'index.html'));
+});
+
+// Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
