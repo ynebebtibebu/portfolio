@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: ['http://localhost:5000', 'https://yourapp.onrender.com'] // Replace with Render URL
+  origin: ['http://localhost:5000', 'https://portfolio-abc123.onrender.com'] // Replace with your Render URL
 }));
 app.use(express.json());
 app.use('/static', express.static(path.join(__dirname, 'static')));
@@ -23,6 +23,7 @@ app.post('/contact', async (req, res) => {
   if (!name || !email || !message) {
     return res.status(400).json({ error: 'All fields are required' });
   }
+
   const mailOptions = {
     from: email,
     to: 'ynebebtibebu31@gmail.com',
@@ -30,18 +31,33 @@ app.post('/contact', async (req, res) => {
     text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
     replyTo: email
   };
+
   try {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
         user: process.env.MAIL_USERNAME,
         pass: process.env.MAIL_PASSWORD
-      }
+      },
+      // Explicit TLS for Gmail
+      secure: true, // Use port 465
+      port: 465
     });
+
+    // Verify SMTP connection
+    await transporter.verify();
+    console.log('SMTP connection verified');
+
     await transporter.sendMail(mailOptions);
+    console.log(`Email sent from ${email} to ynebebtibebu31@gmail.com`);
     res.status(200).json({ message: 'Message sent successfully' });
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error('Error in /contact:', {
+      message: error.message,
+      code: error.code,
+      response: error.response,
+      responseCode: error.responseCode
+    });
     res.status(500).json({ error: `Failed to send message: ${error.message}` });
   }
 });
